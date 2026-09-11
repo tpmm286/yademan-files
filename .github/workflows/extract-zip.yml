@@ -14,10 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Find and Extract ZIP Files
+      - name: Extract ZIP Files
         run: |
           echo "=== Looking for ZIP files ==="
           ls -la
@@ -26,36 +23,30 @@ jobs:
           for zipfile in *.zip; do
             if [ -f "$zipfile" ]; then
               echo "Found and extracting: $zipfile"
-              unzip -o "$zipfile" -d extracted/ || echo "Failed to extract $zipfile"
+              unzip -o "$zipfile" || echo "Failed to extract $zipfile"
             fi
           done
-          
-          echo "=== Contents after extraction ==="
-          ls -la extracted/ 2>/dev/null || echo "No extracted folder"
 
       - name: Remove .ai Files
         run: |
           echo "=== Removing .ai files ==="
           find . -name "*.ai" -type f -delete
-          echo "Removed all .ai files"
-          
-          echo "=== Moving files to root ==="
-          if [ -d "extracted" ]; then
-            cp -r extracted/* . || true
-            rm -rf extracted
-          fi
+          echo "Done removing .ai files"
 
-      - name: Clean up
+      - name: Clean up ZIP files
         run: |
           echo "=== Removing ZIP files ==="
           find . -name "*.zip" -type f -delete
           
           echo "=== Final file list ==="
-          find . -type f -not -path "./.git/*" -not -path "./.github/*" | head -50
+          ls -la
 
-      - name: Commit and Push
+      - name: Git Config and Commit
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
           git add -A
-          git diff --cached --quiet || (git commit -m "Extract ZIP files and remove .ai files" && git push)
+          git commit -m "Extract ZIP and remove .ai files" || echo "No changes"
+          git push || echo "Push failed"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
