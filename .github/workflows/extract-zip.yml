@@ -1,0 +1,48 @@
+name: Extract ZIP and Remove AI Files
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  extract-and-clean:
+    name: Extract ZIP and Remove .ai Files
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Find and Extract ZIP Files
+        run: |
+          ls -la
+          # Find all zip files
+          for zipfile in *.zip; do
+            if [ -f "$zipfile" ]; then
+              echo "Extracting: $zipfile"
+              unzip -o "$zipfile" || true
+            fi
+          done
+          ls -la
+
+      - name: Remove .ai Files
+        run: |
+          find . -name "*.ai" -type f -delete
+          echo "Removed all .ai files"
+          find . -name "*.zip" -type f -delete
+          echo "Removed all .zip files"
+
+      - name: List Final Files
+        run: find . -type f -not -path "./.git/*" -not -path "./.github/*" | head -30
+
+      - name: Commit and Push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git commit -m "Extract ZIP files, remove .ai and .zip files" || echo "No changes to commit"
+          git push || echo "Push failed"
