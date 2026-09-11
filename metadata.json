@@ -1,0 +1,6 @@
+{
+  "name": "یادمان",
+  "description": "سامانه برنامه‌ریزی و مرور هوشمند مطالب بر اساس منحنی فراموشی هرمان ابینگهاوس",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
