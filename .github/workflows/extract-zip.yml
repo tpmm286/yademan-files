@@ -1,4 +1,4 @@
-name: Extract ZIP and Remove AI Files
+name: Extract ZIP Files
 
 on:
   push:
@@ -9,8 +9,8 @@ permissions:
   contents: write
 
 jobs:
-  extract-and-clean:
-    name: Extract ZIP and Remove .ai Files
+  extract:
+    name: Extract ZIP Files
     runs-on: ubuntu-latest
     
     steps:
@@ -32,22 +32,9 @@ jobs:
               unzip -o "$zipfile" || echo "Failed to extract $zipfile"
             fi
           done
-
-      - name: Remove .ai Files
-        run: |
-          cd repo
-          echo "=== Removing .ai files ==="
-          find . -name "*.ai" -type f -delete
-          echo "Done removing .ai files"
-
-      - name: Clean up ZIP files
-        run: |
-          cd repo
-          echo "=== Removing ZIP files ==="
-          find . -name "*.zip" -type f -delete
           
-          echo "=== Final file list ==="
-          find . -type f -not -path "./.git/*"
+          echo "=== Files after extraction ==="
+          ls -la
 
       - name: Commit and Push
         run: |
@@ -55,5 +42,5 @@ jobs:
           git config user.email "action@github.com"
           git config user.name "GitHub Action"
           git add -A
-          git commit -m "Extract ZIP and remove .ai files" || echo "No changes"
+          git commit -m "Extract ZIP files" || echo "No changes"
           git push https://${{ github.token }}@github.com/tpmm286/yademan-files.git main
