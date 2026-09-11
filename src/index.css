@@ -1,0 +1,563 @@
+@import "tailwindcss";
+
+/* Offline Local Font Definitions */
+@font-face {
+  font-family: 'Vazirmatn';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/vazirmatn-400.ttf') format('truetype'),
+       local('Vazirmatn'), local('Vazir'), local('Tahoma');
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/vazirmatn-500.ttf') format('truetype'),
+       local('Vazirmatn Medium'), local('Vazir'), local('Tahoma');
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/vazirmatn-600.ttf') format('truetype'),
+       local('Vazirmatn SemiBold'), local('Vazir'), local('Tahoma');
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/vazirmatn-700.ttf') format('truetype'),
+       local('Vazirmatn Bold'), local('Vazir'), local('Tahoma');
+}
+
+@layer base {
+  html {
+    background-color: #f8fafc;
+    color: #0f172a;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  body {
+    font-family: 'Vazirmatn', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    min-height: 100vh;
+    background-color: inherit;
+    color: inherit;
+  }
+}
+
+/* ==========================================================================
+   THEME STYLING: Dark Theme (Fixing Dark Mode Background & Visibility)
+   ========================================================================== */
+html.theme-dark,
+html.dark,
+.theme-dark {
+  color-scheme: dark;
+  background-color: #090d16 !important;
+  color: #f1f5f9 !important;
+}
+
+.theme-dark body,
+.theme-dark #root,
+.theme-dark .app-container {
+  background-color: #090d16 !important;
+  color: #f1f5f9 !important;
+}
+
+/* Modal Backdrops & Overlays */
+.theme-dark [id*="-modal-backdrop"],
+.theme-dark [id*="-backdrop"],
+.theme-dark .backdrop-blur-xs {
+  background-color: rgba(3, 7, 18, 0.8) !important;
+}
+
+.theme-dark header,
+.theme-dark footer {
+  background-color: #0f172a !important;
+  border-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+/* Main Cards, Modals & White Containers */
+.theme-dark .bg-white,
+.theme-dark [class*="bg-white"] {
+  background-color: #0f172a !important;
+  border-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+/* Gradients in Dark Mode */
+.theme-dark [class*="bg-gradient-to"] {
+  background-image: linear-gradient(to bottom right, #0f172a, #151f38) !important;
+  border-color: #1e293b !important;
+}
+
+/* Secondary Panels, Sub-cards, List Items */
+.theme-dark .bg-slate-50,
+.theme-dark .bg-slate-50\/60,
+.theme-dark .bg-slate-50\/70,
+.theme-dark .bg-slate-50\/80,
+.theme-dark .bg-slate-100,
+.theme-dark .bg-slate-100\/80,
+.theme-dark .bg-slate-200,
+.theme-dark [class*="bg-slate-50"],
+.theme-dark [class*="bg-slate-100"] {
+  background-color: #172033 !important;
+  border-color: #273549 !important;
+  color: #e2e8f0 !important;
+}
+
+.theme-dark .hover\:bg-slate-50:hover,
+.theme-dark .hover\:bg-slate-100:hover,
+.theme-dark .hover\:bg-slate-200:hover,
+.theme-dark .hover\:bg-slate-300:hover {
+  background-color: #222f46 !important;
+  color: #ffffff !important;
+}
+
+/* Typography & Contrast */
+.theme-dark .text-slate-950,
+.theme-dark .text-slate-900,
+.theme-dark .text-slate-800,
+.theme-dark .text-slate-700 {
+  color: #f8fafc !important;
+}
+
+.theme-dark .text-slate-600,
+.theme-dark .text-slate-500 {
+  color: #a0aec0 !important;
+}
+
+.theme-dark .text-slate-400 {
+  color: #718096 !important;
+}
+
+/* Borders */
+.theme-dark [class*="border-slate-"] {
+  border-color: #1e293b !important;
+}
+
+/* Form inputs & dropdowns */
+.theme-dark input,
+.theme-dark textarea,
+.theme-dark select {
+  background-color: #172033 !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+.theme-dark input:focus,
+.theme-dark textarea:focus,
+.theme-dark select:focus {
+  border-color: #3b82f6 !important;
+  background-color: #1b263b !important;
+}
+
+.theme-dark input::placeholder,
+.theme-dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+.theme-dark select option {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+/* Accent boxes - Indigo */
+.theme-dark .bg-indigo-50,
+.theme-dark .bg-indigo-50\/60,
+.theme-dark .bg-indigo-50\/70,
+.theme-dark .bg-indigo-50\/80,
+.theme-dark .bg-indigo-50\/90,
+.theme-dark .bg-indigo-100,
+.theme-dark .bg-indigo-200 {
+  background-color: #141c38 !important;
+  border-color: #2e3e82 !important;
+  color: #a5b4fc !important;
+}
+
+.theme-dark .text-indigo-950,
+.theme-dark .text-indigo-900,
+.theme-dark .text-indigo-800,
+.theme-dark .text-indigo-700 {
+  color: #a5b4fc !important;
+}
+
+.theme-dark .text-indigo-600,
+.theme-dark .text-indigo-500 {
+  color: #818cf8 !important;
+}
+
+.theme-dark .hover\:bg-indigo-50:hover,
+.theme-dark .hover\:bg-indigo-100:hover {
+  background-color: #212e5a !important;
+}
+
+/* Accent boxes - Blue */
+.theme-dark .bg-blue-50,
+.theme-dark .bg-blue-50\/70,
+.theme-dark .bg-blue-50\/80,
+.theme-dark .bg-blue-50\/90,
+.theme-dark .bg-blue-100,
+.theme-dark .bg-blue-200 {
+  background-color: #0f2142 !important;
+  border-color: #214682 !important;
+  color: #93c5fd !important;
+}
+
+.theme-dark .text-blue-950,
+.theme-dark .text-blue-900,
+.theme-dark .text-blue-800,
+.theme-dark .text-blue-700 {
+  color: #93c5fd !important;
+}
+
+.theme-dark .text-blue-600,
+.theme-dark .text-blue-500 {
+  color: #60a5fa !important;
+}
+
+.theme-dark .hover\:bg-blue-50:hover,
+.theme-dark .hover\:bg-blue-100:hover {
+  background-color: #1a3468 !important;
+}
+
+/* Accent boxes - Rose */
+.theme-dark .bg-rose-50,
+.theme-dark .bg-rose-50\/70,
+.theme-dark .bg-rose-50\/80,
+.theme-dark .bg-rose-50\/90,
+.theme-dark .bg-rose-100,
+.theme-dark .bg-rose-200 {
+  background-color: #3b111e !important;
+  border-color: #6d1e35 !important;
+  color: #fca5a5 !important;
+}
+
+.theme-dark .text-rose-950,
+.theme-dark .text-rose-900,
+.theme-dark .text-rose-800,
+.theme-dark .text-rose-700 {
+  color: #fca5a5 !important;
+}
+
+.theme-dark .text-rose-600,
+.theme-dark .text-rose-500 {
+  color: #f87171 !important;
+}
+
+.theme-dark .hover\:bg-rose-50:hover,
+.theme-dark .hover\:bg-rose-50\/70:hover,
+.theme-dark .hover\:bg-rose-100:hover {
+  background-color: #52192a !important;
+}
+
+/* Accent boxes - Emerald */
+.theme-dark .bg-emerald-50,
+.theme-dark .bg-emerald-50\/70,
+.theme-dark .bg-emerald-50\/80,
+.theme-dark .bg-emerald-50\/90,
+.theme-dark .bg-emerald-100,
+.theme-dark .bg-emerald-200 {
+  background-color: #0d2e22 !important;
+  border-color: #1b5e45 !important;
+  color: #6ee7b7 !important;
+}
+
+.theme-dark .text-emerald-950,
+.theme-dark .text-emerald-900,
+.theme-dark .text-emerald-800,
+.theme-dark .text-emerald-700 {
+  color: #6ee7b7 !important;
+}
+
+.theme-dark .text-emerald-600,
+.theme-dark .text-emerald-500 {
+  color: #34d399 !important;
+}
+
+.theme-dark .hover\:bg-emerald-50:hover,
+.theme-dark .hover\:bg-emerald-100:hover {
+  background-color: #144432 !important;
+}
+
+/* Accent boxes - Amber */
+.theme-dark .bg-amber-50,
+.theme-dark .bg-amber-50\/70,
+.theme-dark .bg-amber-50\/80,
+.theme-dark .bg-amber-50\/90,
+.theme-dark .bg-amber-100,
+.theme-dark .bg-amber-200 {
+  background-color: #33200a !important;
+  border-color: #633e13 !important;
+  color: #fde047 !important;
+}
+
+.theme-dark .text-amber-950,
+.theme-dark .text-amber-900,
+.theme-dark .text-amber-800,
+.theme-dark .text-amber-700 {
+  color: #fde047 !important;
+}
+
+.theme-dark .text-amber-600,
+.theme-dark .text-amber-500 {
+  color: #fbbf24 !important;
+}
+
+.theme-dark .hover\:bg-amber-50:hover,
+.theme-dark .hover\:bg-amber-100\/60:hover,
+.theme-dark .hover\:bg-amber-100:hover {
+  background-color: #4a2f0e !important;
+}
+
+/* Accent boxes - Purple */
+.theme-dark .bg-purple-50,
+.theme-dark .bg-purple-50\/70,
+.theme-dark .bg-purple-50\/80,
+.theme-dark .bg-purple-100,
+.theme-dark .bg-purple-200 {
+  background-color: #261642 !important;
+  border-color: #492a7e !important;
+  color: #d8b4fe !important;
+}
+
+.theme-dark .text-purple-950,
+.theme-dark .text-purple-900,
+.theme-dark .text-purple-800,
+.theme-dark .text-purple-700 {
+  color: #d8b4fe !important;
+}
+
+/* Generic Badge / Red / Yellow boxes in Dark Mode */
+.theme-dark .bg-red-50,
+.theme-dark .bg-red-100 {
+  background-color: #3b111e !important;
+  border-color: #6d1e35 !important;
+  color: #fca5a5 !important;
+}
+
+.theme-dark .text-red-700,
+.theme-dark .text-red-800 {
+  color: #fca5a5 !important;
+}
+
+.theme-dark .bg-yellow-50,
+.theme-dark .bg-yellow-100 {
+  background-color: #33200a !important;
+  border-color: #633e13 !important;
+  color: #fde047 !important;
+}
+
+.theme-dark .text-yellow-700,
+.theme-dark .text-yellow-800 {
+  color: #fde047 !important;
+}
+
+/* Recharts High-Contrast Styling Across All Themes */
+.recharts-cartesian-grid line {
+  stroke: #e2e8f0;
+}
+.recharts-cartesian-axis-line,
+.recharts-cartesian-axis-tick-line {
+  stroke: #cbd5e1;
+}
+.recharts-text,
+.recharts-cartesian-axis-tick-value,
+.recharts-cartesian-axis-tick text {
+  fill: #475569;
+}
+.recharts-legend-item-text {
+  color: #334155;
+  fill: #334155;
+}
+
+/* Recharts in Dark Mode - Maximum Contrast & Legibility */
+.theme-dark .recharts-cartesian-grid line {
+  stroke: #334155 !important;
+  stroke-dasharray: 4 4;
+}
+
+.theme-dark .recharts-cartesian-axis-line,
+.theme-dark .recharts-cartesian-axis-tick-line {
+  stroke: #475569 !important;
+}
+
+.theme-dark .recharts-text,
+.theme-dark .recharts-cartesian-axis-tick-value,
+.theme-dark .recharts-cartesian-axis-tick text,
+.theme-dark .recharts-label,
+.theme-dark .recharts-text tspan,
+.theme-dark .recharts-legend-item-text {
+  fill: #f1f5f9 !important;
+  color: #f1f5f9 !important;
+  font-weight: 500 !important;
+}
+
+.theme-dark .recharts-default-tooltip {
+  background-color: #1e293b !important;
+  border-color: #475569 !important;
+  color: #f8fafc !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7) !important;
+}
+
+.theme-dark .recharts-tooltip-item,
+.theme-dark .recharts-tooltip-item-name,
+.theme-dark .recharts-tooltip-item-value {
+  color: #f8fafc !important;
+}
+
+/* Dark Mode Alert Banner & Badges High-Contrast Accessibility */
+.theme-dark #in-app-due-alert {
+  background: linear-gradient(135deg, rgba(136, 19, 55, 0.45) 0%, rgba(30, 27, 75, 0.5) 100%) !important;
+  border-color: #f43f5e !important;
+  color: #ffffff !important;
+}
+
+.theme-dark #in-app-due-alert h3 {
+  color: #ffffff !important;
+}
+
+.theme-dark #in-app-due-alert p {
+  color: #f1f5f9 !important;
+}
+
+.theme-dark #in-app-due-alert span {
+  color: #fecdd3 !important;
+  background-color: rgba(159, 18, 57, 0.6) !important;
+  border-color: #f43f5e !important;
+}
+
+/* Mobile status badge responsiveness and contrast */
+@media (max-width: 640px) {
+  [class*="rounded-full"],
+  [class*="rounded-md"] {
+    white-space: nowrap;
+    word-break: keep-all;
+  }
+}
+
+/* ==========================================================================
+   THEME STYLING: Classic Warm Theme (کاغذ مطالعه ارگونومیک)
+   ========================================================================== */
+html.theme-classic,
+.theme-classic {
+  color-scheme: light;
+  background-color: #f5f0e6 !important;
+  color: #292524 !important;
+}
+
+.theme-classic body,
+.theme-classic #root,
+.theme-classic .app-container {
+  background-color: #f5f0e6 !important;
+  color: #292524 !important;
+}
+
+.theme-classic header,
+.theme-classic footer {
+  background-color: #fbf9f4 !important;
+  border-color: #e6ded0 !important;
+  color: #292524 !important;
+}
+
+.theme-classic .bg-white,
+.theme-classic [class*="bg-white"] {
+  background-color: #fcfaf6 !important;
+  border-color: #e6ded0 !important;
+  color: #292524 !important;
+}
+
+.theme-classic .bg-slate-50,
+.theme-classic .bg-slate-50\/60,
+.theme-classic .bg-slate-50\/70,
+.theme-classic .bg-slate-100,
+.theme-classic [class*="bg-slate-50"],
+.theme-classic [class*="bg-slate-100"] {
+  background-color: #ede7d8 !important;
+  border-color: #ded6c3 !important;
+  color: #38342e !important;
+}
+
+.theme-classic .text-slate-900,
+.theme-classic .text-slate-800 {
+  color: #1c1917 !important;
+}
+
+.theme-classic .text-slate-700,
+.theme-classic .text-slate-600 {
+  color: #44403c !important;
+}
+
+.theme-classic .text-slate-500,
+.theme-classic .text-slate-400 {
+  color: #78716c !important;
+}
+
+.theme-classic [class*="border-slate-"] {
+  border-color: #e6ded0 !important;
+}
+
+.theme-classic input,
+.theme-classic textarea,
+.theme-classic select {
+  background-color: #fbf9f4 !important;
+  border-color: #ded6c3 !important;
+  color: #1c1917 !important;
+}
+
+.theme-classic .bg-indigo-50,
+.theme-classic .bg-indigo-50\/60,
+.theme-classic .bg-indigo-50\/70 {
+  background-color: #eae5d7 !important;
+  border-color: #ded6c3 !important;
+}
+
+.theme-classic .text-indigo-950,
+.theme-classic .text-indigo-900 {
+  color: #352e22 !important;
+}
+
+/* ==========================================================================
+   PRINT STYLES FOR PDF EXPORT
+   ========================================================================== */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #pdf-export-content,
+  #pdf-export-content * {
+    visibility: visible !important;
+  }
+  #pdf-export-content {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 10mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: white !important;
+    color: black !important;
+  }
+  .pdf-section-block,
+  .calendar-month-block,
+  table,
+  tr,
+  tbody {
+    break-after: page !important;
+    page-break-after: always !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+}
+
