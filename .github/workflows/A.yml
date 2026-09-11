@@ -1,0 +1,54 @@
+name: Extract ZIP to Root
+
+on:
+  workflow_dispatch:
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract ZIP
+        run: |
+          ZIP_FILE=$(find . -maxdepth 1 -type f -iname "*.zip" | head -n 1)
+
+          if [ -z "$ZIP_FILE" ]; then
+            echo "No ZIP file found in repository root."
+            exit 1
+          fi
+
+          echo "Extracting: $ZIP_FILE"
+
+          mkdir -p .extract_tmp
+          unzip -o "$ZIP_FILE" -d .extract_tmp
+
+          # If ZIP contains one top-level folder, extract its contents to root
+          ITEMS=$(find .extract_tmp -mindepth 1 -maxdepth 1 | wc -l)
+
+          if [ "$ITEMS" -eq 1 ] && [ -d "$(find .extract_tmp -mindepth 1 -maxdepth 1 -type d)" ]; then
+            SOURCE_DIR=$(find .extract_tmp -mindepth 1 -maxdepth 1 -type d)
+            cp -a "$SOURCE_DIR"/. .
+          else
+            cp -a .extract_tmp/. .
+          fi
+
+          rm -rf .extract_tmp
+
+      - name: Remove ZIP files
+        run: |
+          find . -maxdepth 1 -type f -iname "*.zip" -delete
+
+      - name: Commit extracted files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+          git commit -m "Extract ZIP contents to repository root" || echo "No changes to commit"
+          git push
