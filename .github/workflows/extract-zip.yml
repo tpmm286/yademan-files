@@ -14,8 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Clone Repository
+        run: |
+          git clone https://github.com/tpmm286/yademan-files.git repo
+          cd repo
+
       - name: Extract ZIP Files
         run: |
+          cd repo
           echo "=== Looking for ZIP files ==="
           ls -la
           
@@ -29,24 +35,25 @@ jobs:
 
       - name: Remove .ai Files
         run: |
+          cd repo
           echo "=== Removing .ai files ==="
           find . -name "*.ai" -type f -delete
           echo "Done removing .ai files"
 
       - name: Clean up ZIP files
         run: |
+          cd repo
           echo "=== Removing ZIP files ==="
           find . -name "*.zip" -type f -delete
           
           echo "=== Final file list ==="
-          ls -la
+          find . -type f -not -path "./.git/*"
 
-      - name: Git Config and Commit
+      - name: Commit and Push
         run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
+          cd repo
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
           git add -A
           git commit -m "Extract ZIP and remove .ai files" || echo "No changes"
-          git push || echo "Push failed"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git push https://${{ github.token }}@github.com/tpmm286/yademan-files.git main
