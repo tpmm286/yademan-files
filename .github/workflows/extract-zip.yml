@@ -12,31 +12,44 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout with PAT
+        run: |
+          mkdir -p repo
+          cd repo
+          git init
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/tpmm286/yademan-files.git
+          git fetch origin main
+          git checkout origin/main -b main
 
       - name: Extract ZIP Files
         run: |
+          cd repo
+          echo "=== Current directory ==="
+          pwd
+          
           echo "=== Looking for ZIP files ==="
           ls -la
           
           echo "=== Extracting ZIP files ==="
           for zipfile in *.zip; do
             if [ -f "$zipfile" ]; then
-              echo "Found and extracting: $zipfile"
-              unzip -o "$zipfile"
+              echo "Extracting: $zipfile"
+              unzip -o "$zipfile" -d .
             fi
           done
           
           echo "=== Files after extraction ==="
-          find . -type f -not -path "./.git/*" -not -path "./.github/*"
+          ls -la
 
-      - name: Commit and Push
+      - name: Push Changes
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          cd repo
           git add -A
-          git commit -m "Extract ZIP files" || echo "No changes to commit"
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Extract ZIP files"
+            git push origin main
+          fi
