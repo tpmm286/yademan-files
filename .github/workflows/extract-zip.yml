@@ -15,34 +15,47 @@ jobs:
     
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Find and Extract ZIP Files
         run: |
+          echo "=== Looking for ZIP files ==="
           ls -la
-          # Find all zip files
+          
+          echo "=== Extracting ZIP files ==="
           for zipfile in *.zip; do
             if [ -f "$zipfile" ]; then
-              echo "Extracting: $zipfile"
-              unzip -o "$zipfile" || true
+              echo "Found and extracting: $zipfile"
+              unzip -o "$zipfile" -d extracted/ || echo "Failed to extract $zipfile"
             fi
           done
-          ls -la
+          
+          echo "=== Contents after extraction ==="
+          ls -la extracted/ 2>/dev/null || echo "No extracted folder"
 
       - name: Remove .ai Files
         run: |
+          echo "=== Removing .ai files ==="
           find . -name "*.ai" -type f -delete
           echo "Removed all .ai files"
-          find . -name "*.zip" -type f -delete
-          echo "Removed all .zip files"
+          
+          echo "=== Moving files to root ==="
+          if [ -d "extracted" ]; then
+            cp -r extracted/* . || true
+            rm -rf extracted
+          fi
 
-      - name: List Final Files
-        run: find . -type f -not -path "./.git/*" -not -path "./.github/*" | head -30
+      - name: Clean up
+        run: |
+          echo "=== Removing ZIP files ==="
+          find . -name "*.zip" -type f -delete
+          
+          echo "=== Final file list ==="
+          find . -type f -not -path "./.git/*" -not -path "./.github/*" | head -50
 
       - name: Commit and Push
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "Extract ZIP files, remove .ai and .zip files" || echo "No changes to commit"
-          git push || echo "Push failed"
+          git diff --cached --quiet || (git commit -m "Extract ZIP files and remove .ai files" && git push)
