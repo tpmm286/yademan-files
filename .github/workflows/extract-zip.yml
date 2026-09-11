@@ -1,8 +1,6 @@
 name: Extract ZIP Files
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -14,14 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Clone Repository
-        run: |
-          git clone https://github.com/tpmm286/yademan-files.git repo
-          cd repo
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract ZIP Files
         run: |
-          cd repo
           echo "=== Looking for ZIP files ==="
           ls -la
           
@@ -29,18 +26,17 @@ jobs:
           for zipfile in *.zip; do
             if [ -f "$zipfile" ]; then
               echo "Found and extracting: $zipfile"
-              unzip -o "$zipfile" || echo "Failed to extract $zipfile"
+              unzip -o "$zipfile"
             fi
           done
           
           echo "=== Files after extraction ==="
-          ls -la
+          find . -type f -not -path "./.git/*" -not -path "./.github/*"
 
       - name: Commit and Push
         run: |
-          cd repo
-          git config user.email "action@github.com"
-          git config user.name "GitHub Action"
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "Extract ZIP files" || echo "No changes"
-          git push https://${{ github.token }}@github.com/tpmm286/yademan-files.git main
+          git commit -m "Extract ZIP files" || echo "No changes to commit"
+          git push
